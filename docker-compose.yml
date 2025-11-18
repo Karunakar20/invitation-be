@@ -1,0 +1,18 @@
+
+services:
+  user_db:
+    image: postgres:16
+    container_name: wedding_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user@1234
+      POSTGRES_DB: wedding_db
+    ports:
+      - "6000:5432"
+    volumes:
+      - wedding_db_data:/var/lib/postgresql/data
+
+  
+
+volumes:
+  wedding_db_data:

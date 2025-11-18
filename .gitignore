@@ -1,0 +1,39 @@
+# Ignore virtual environment
+.venv/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Environment / IDE files
+.env
+*.env
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Test / coverage reports
+htmlcov/
+.coverage
+.pytest_cache/
+
+app/alembic/versions/

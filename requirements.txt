@@ -24,6 +24,8 @@ Mako==1.3.10
 markdown-it-py==4.0.0
 MarkupSafe==3.0.3
 mdurl==0.1.2
+numpy==2.3.5
+pandas==2.3.3
 psycopg2-binary==2.9.11
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
@@ -33,8 +35,10 @@ pydantic_core==2.41.1
 Pygments==2.19.2
 pylsqpack==0.3.22
 pyOpenSSL==25.3.0
+python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 python-multipart==0.0.20
+pytz==2025.2
 PyYAML==6.0.3
 rich==14.2.0
 rich-toolkit==0.15.1
@@ -42,12 +46,14 @@ rignore==0.7.0
 sentry-sdk==2.41.0
 service-identity==24.2.0
 shellingham==1.5.4
+six==1.17.0
 sniffio==1.3.1
 SQLAlchemy==2.0.44
 starlette==0.48.0
 typer==0.19.2
 typing-inspection==0.4.2
 typing_extensions==4.15.0
+tzdata==2025.2
 urllib3==2.5.0
 uvicorn==0.37.0
 uvloop==0.21.0

@@ -8,8 +8,8 @@ from alembic import context
 import models
 import importlib
 import pkgutil
-from config.db.database import Base
-from core.settings import DATABASE_URL
+from core.db.database import Base
+from app.core.db.settings import DATABASE_URL
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

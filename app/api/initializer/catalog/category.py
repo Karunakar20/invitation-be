@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from api.models.lovs.category import Category,SubCategory
+from app.api.models.lovs.catalog.category import Category,SubCategory
 from core.db.db_config import SessionLocal
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))

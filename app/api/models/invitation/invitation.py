@@ -20,7 +20,6 @@ class Invitation(Base):
 
       link = Column(String,nullable=True)
 
-
       __tablename__ = "tb_invitation"
 
 class SubInvitation(Base):
@@ -38,7 +37,7 @@ class SubInvitation(Base):
       note = Column(String(500),nullable=True)
       event_photo = Column(String)
 
-      link = Column(String,nullable=True)
+      links = Column(String,nullable=True)
 
       __tablename__ = "tb_sub_invitation"
 

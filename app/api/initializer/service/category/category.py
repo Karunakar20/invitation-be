@@ -1,6 +1,9 @@
+import os
 import pandas as pd
 from api.models.lovs.category import Category,SubCategory
 from core.db.db_config import SessionLocal
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 class CategoryInitializer:
 
@@ -9,9 +12,10 @@ class CategoryInitializer:
             self.category_model = Category
             self.sub_category_model = SubCategory
     
-      def initializer(self):
+      def categotyInitializer(self):
+            category_path = os.path.join(BASE_DIR, "data/category/category .csv")
             
-            categories = pd.read_csv("app/api/initializer/data/category/category .csv")
+            categories = pd.read_csv(category_path)
 
             for _, category in categories.iterrows():
                   self.code = category['code']
@@ -34,6 +38,45 @@ class CategoryInitializer:
                         self.db.add(self.new_category)
 
             self.db.commit()
+
+      def subCategotyInitializer(self):
+
+            sub_category_path = os.path.join(BASE_DIR, "data/category/sub_category.csv")
+
+            sub_categories = pd.read_csv(sub_category_path)
+
+            for _, sub_category in sub_categories.iterrows():
+
+                  self.category_code = sub_category['category_code']
+                  
+                  self.sub_cat_name = sub_category['name']
+                  self.sub_cat_code = sub_category['code']
+                  self.sub_cat_colore_code = sub_category['colore']
+
+                  category = self.db.query(self.category_model).filter(self.category_model.code == self.category_code).first()
+                  self.existing_sub_category = self.db.query(self.sub_category_model).filter(self.sub_category_model.code == self.sub_cat_code).first()
+
+                  if self.existing_sub_category:
+                        self.existing_sub_category.code = self.sub_cat_code
+                        self.existing_sub_category.name = self.sub_cat_name
+                        self.existing_sub_category.colore_code = self.sub_cat_colore_code
+                        self.existing_sub_category.category_id = category.id
+
+                  else:
+
+                        self.new_category = SubCategory(
+                              code=self.sub_cat_code,
+                              name=self.sub_cat_name,
+                              colore_code=self.sub_cat_colore_code,
+                              category_id = category.id
+                              )
+                        
+                        self.db.add(self.new_category)
+
+            self.db.commit()
+
+
+
             
 
 
@@ -41,5 +84,6 @@ class CategoryInitializer:
 
 
 
-if __name__ == "__main__":
-    CategoryInitializer().initializer()
+# if __name__ == "__main__":
+# #     CategoryInitializer().categotyInitializer()
+# #     CategoryInitializer().subCategotyInitializer()

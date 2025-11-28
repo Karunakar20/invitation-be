@@ -4,7 +4,7 @@ from core.db.database import Base
 class Category(Base):
 
     id = Column(Integer, primary_key=True, index=True)
-    code = Column(String(5))
+    code = Column(String(10))
     name = Column(String(30))
     colore_code = Column(String(10), nullable=True)
 
@@ -14,7 +14,8 @@ class SubCategory(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     category_id = Column(Integer, ForeignKey("tb_category.id"))
-    code = Column(String(5))
+    code = Column(String(10))
+    name = Column(String(30))
     colore_code = Column(String(10), nullable=True)
 
     __tablename__ = "tb_sub_category"

@@ -6,7 +6,6 @@ from api.utilities.common import Response,ResponseType
 class Invitation(Base):
       id = Column(Integer, primary_key=True, index=True)
       event_type = Column(Integer, ForeignKey("tb_category.id", ondelete="CASCADE"))
-      guest = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
       created_by = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
 
       event_title = Column(String(250))
@@ -27,7 +26,6 @@ class Invitation(Base):
 class SubInvitation(Base):
       id = Column(Integer, primary_key=True, index=True)
       event_type = Column(Integer, ForeignKey("tb_sub_category.id", ondelete="CASCADE"))
-      guest = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
       created_by = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
 
       event_title = Column(String(250))
@@ -56,5 +54,24 @@ class InvitationProfile(Base):
       is_template_need = Column(Boolean,default=False)
 
       __tablename__ = "tb_invitation_profile"
+
+class InvitationGuests(Base):
+      id = Column(Integer, primary_key=True, index=True)
+
+      invitation = Column(Integer, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
+      guest = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
+
+      __tablename__ = "tb_invitation_guests"
+
+
+class SubInvitationGuests(Base):
+      id = Column(Integer, primary_key=True, index=True)
+
+      sub_invitation = Column(Integer, ForeignKey("tb_sub_invitation.id", ondelete="CASCADE"))
+      guest = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
+
+      __tablename__ = "tb_sub_invitation_guests"
+
+
 
 

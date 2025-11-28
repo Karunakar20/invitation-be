@@ -1,22 +1,33 @@
-from app.api.models.lovs.catalog.category import SubCategory
+from api.models.lovs.catalog.category import SubCategory
 from core.db.db_config import SessionLocal
-from utilities.common import Response,ResponseType
+from api.utilities.common import Response,ResponseType
 
-class CategoryLovService:
+class SubCategoryLovService:
       def __init__(self):
             self.db = SessionLocal() 
 
-      def getSubCategory(self,id):
+      def getSubCategory(self,pData):
+            category_id = pData.get('category_id')
+            search = pData.get('search')
             try:
-                  self.sub_category = self.db.query(SubCategory).filter(SubCategory.category_id == id).first()
+                  self.sub_category = self.db.query(SubCategory)
+                  if category_id:
+                        self.sub_category = self.sub_category.filter(SubCategory.category_id == category_id)
+                  
+                  if search:
+                        self.sub_category = self.sub_category.filter(SubCategory.name.ilike(f"%{search}%"))
 
-                  data = {
-                        "id": self.sub_category.id,
-                        "icon_name": self.sub_category.code,
-                        "name": self.sub_category.name,
-                        "colore_code": self.sub_category.colore_code
-                  }
-                  return Response(True,ResponseType.success,None,None,data)
+                  sub_category_list = []
+                  for sub_category in self.sub_category:
+
+                        data = {
+                              "id": sub_category.id,
+                              "icon_name": sub_category.code,
+                              "name": sub_category.name,
+                              "colore_code": sub_category.colore_code
+                        }
+                        sub_category_list.append(data)
+                  return Response(True,ResponseType.success,None,None,sub_category_list)
             
             except Exception as e:
                   return Response(False,ResponseType.err,"Unable to retrive sub category",str(e))

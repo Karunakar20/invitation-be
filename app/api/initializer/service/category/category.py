@@ -74,16 +74,3 @@ class CategoryInitializer:
                         self.db.add(self.new_category)
 
             self.db.commit()
-
-
-
-            
-
-
-
-
-
-
-# if __name__ == "__main__":
-# #     CategoryInitializer().categotyInitializer()
-# #     CategoryInitializer().subCategotyInitializer()

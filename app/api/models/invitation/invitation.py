@@ -55,9 +55,6 @@ class InvitationProfile(Base):
 
       is_template_need = Column(Boolean,default=False)
 
-
-
-      
       __tablename__ = "tb_invitation_profile"
 
 

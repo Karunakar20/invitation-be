@@ -1,7 +1,7 @@
 import sys, os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
-from api.initializer.category.category import CategoryInitializer
+from api.initializer.catalog.category import CategoryInitializer
 
 
 def main():

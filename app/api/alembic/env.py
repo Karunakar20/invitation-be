@@ -1,3 +1,6 @@
+import os
+import sys
+
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
@@ -6,8 +9,11 @@ from alembic import context
 import importlib
 import pkgutil
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.append(BASE_DIR)
+
 from core.db.database import Base
-import api.models  # root models package
+import models  # root models package
 
 # This is the Alembic Config object, which provides access
 # to the values within the .ini file in use.
@@ -28,7 +34,7 @@ def import_submodules(package):
 
 
 # Import all model files including those inside subfolders
-import_submodules(api.models)
+import_submodules(models)
 
 
 # target metadata for Alembic autogenerate support

@@ -4,7 +4,7 @@ from core.db.settings import DATABASE_URL
 
 engine = create_engine(DATABASE_URL)
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False,expire_on_commit=True, bind=engine)
 
 def db_connection():
      db = SessionLocal()

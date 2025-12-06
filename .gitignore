@@ -3,6 +3,8 @@
 
 # Python cache and compiled files
 __pycache__/
+*.pyc
+*.pyo
 *.py[cod]
 *.pyo
 *.pyd

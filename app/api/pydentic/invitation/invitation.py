@@ -14,23 +14,27 @@ class SubInvitationPydentic(BaseModel):
     id: Optional[int] = None
     event_type: int
     created_by: int
-    event_title: str
-    event_start_date: date
+    event_name: str
+    venue_location: str
+    event_date: date
     event_start_time: time
-    event_end_date: date
     event_end_time: time
-    venue_name: str
-    venue_address: str
-    note: Optional[str] = None
     event_photo: str
-    link: Optional[str] = None
-
 
 class InvitationPydentic(BaseModel):
     id: Optional[int] = None
-    event_type: int
+    # event_type: int
+    event_name: str
+    venue_location: str
+    event_date: date
+    event_time: time
+    event_photo: str
     created_by: int
     updated_by : int
 
+    event_photo: str
+    link: Optional[str] = None
+    csv_file_path: Optional[str] = None
+    qr_code_path: Optional[str] = None
+
     sub_invitating: List[SubInvitationPydentic] = Field(default_factory=list)
-    invitation_profile : Optional[InvitaionProfile]= None

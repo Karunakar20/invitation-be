@@ -3,21 +3,19 @@ from core.db.database import Base
 
 class Invitation(Base):
       id = Column(Integer, primary_key=True, index=True)
-      event_type = Column(Integer, ForeignKey("tb_category.id", ondelete="CASCADE"))
+      # event_type = Column(Integer, ForeignKey("tb_category.id", ondelete="CASCADE"))
       created_by = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
       updated_by = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
 
-      # event_title = Column(String(250))
-      # event_date = Column(Date)
-      # event_time = Column(Time)
+      event_name = Column(String(250))
+      venue_location = Column(String(250))
+      event_date = Column(Date)
+      event_time = Column(Time)
 
-      # venue_name = Column(String(250))
-      # venue_address = Column(String(250))
-
-      # note = Column(String(250),nullable=True)
-      # event_photo = Column(String)
-
-      # link = Column(String,nullable=True)
+      event_photo = Column(String)
+      csv_file_path = Column(String, nullable=True)
+      link = Column(String, nullable=True)
+      qr_code_path = Column(String, nullable=True)
 
       __tablename__ = "tb_invitation"
 
@@ -25,37 +23,27 @@ class SubInvitation(Base):
       id = Column(Integer, primary_key=True, index=True)
       invitation = Column(Integer, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
 
-      event_type = Column(Integer, ForeignKey("tb_sub_category.id", ondelete="CASCADE"))
-      created_by = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
+      event_name = Column(String(250))
+      venue_location = Column(String(250))
 
-      event_title = Column(String(250))
-      event_start_date = Column(Date)
+      event_date = Column(Date)
       event_start_time = Column(Time)
-      event_end_date = Column(Date)
       event_end_time = Column(Time)
-
-      venue_name = Column(String(250))
-      venue_address = Column(String(250))
-
-      note = Column(String(500),nullable=True)
       event_photo = Column(String,nullable=True)
-      links = Column(String,nullable=True)
 
       __tablename__ = "tb_sub_invitation"
 
-class InvitationProfile(Base):
-      id = Column(Integer, primary_key=True, index=True)
-      invitation = Column(Integer, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
-      name_1 = Column(String(250),nullable=True)
-      name_2 = Column(String(250),nullable=True)
-      is_template_need = Column(Boolean,default=False)
-
-      __tablename__ = "tb_invitation_profile"
+# class InvitationProfile(Base):
+#       id = Column(Integer, primary_key=True, index=True)
+#       invitation = Column(Integer, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
+#       name_1 = Column(String(250),nullable=True)
+#       name_2 = Column(String(250),nullable=True)
+#       __tablename__ = "tb_invitation_profile"
       
 class InvitationGuests(Base):
       id = Column(Integer, primary_key=True, index=True)
 
-      sub_invitation = Column(Integer, ForeignKey("tb_sub_invitation.id", ondelete="CASCADE"))
+      invitation = Column(Integer, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
       guest = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
 
       __tablename__ = "tb_invitation_guests"

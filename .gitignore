@@ -38,4 +38,5 @@ htmlcov/
 .coverage
 .pytest_cache/
 
-app/api/alembic/versions/
+app/api/alembic/versions/*
+!app/api/alembic/versions/.gitkeep

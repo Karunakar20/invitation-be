@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from api.views.lovs import router as LovRouter
+# from api.views.lovs import router as LovRouter
 from api.views.invitation import router as ServiceRouter
 
 # Create FastAPI app

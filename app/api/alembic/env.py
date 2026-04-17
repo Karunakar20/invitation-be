@@ -13,6 +13,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 sys.path.append(BASE_DIR)
 
 from core.db.database import Base
+from core.config import settings
 import models  # root models package
 
 # This is the Alembic Config object, which provides access
@@ -46,7 +47,8 @@ target_metadata = Base.metadata
 # ------------------------------------------------------
 def run_migrations_offline() -> None:
     """Run migrations in offline mode."""
-    url = config.get_main_option("sqlalchemy.url")
+    url = settings.database_url
+    config.set_main_option("sqlalchemy.url", url)
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -59,6 +61,7 @@ def run_migrations_offline() -> None:
 
 def run_migrations_online() -> None:
     """Run migrations in online mode."""
+    config.set_main_option("sqlalchemy.url", settings.database_url)
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

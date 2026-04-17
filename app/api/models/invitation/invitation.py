@@ -32,13 +32,6 @@ class SubInvitation(Base):
       event_photo = Column(String,nullable=True)
 
       __tablename__ = "tb_sub_invitation"
-
-# class InvitationProfile(Base):
-#       id = Column(Integer, primary_key=True, index=True)
-#       invitation = Column(Integer, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
-#       name_1 = Column(String(250),nullable=True)
-#       name_2 = Column(String(250),nullable=True)
-#       __tablename__ = "tb_invitation_profile"
       
 class InvitationGuests(Base):
       id = Column(Integer, primary_key=True, index=True)

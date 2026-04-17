@@ -1,8 +1,10 @@
 from jose import jwt
 from datetime import datetime, timedelta
 
-SECRET_KEY = "secretkey123"
-ALGORITHM = "HS256"
+from core.config import settings
+
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.jwt_algorithm
 
 def create_access_token(data: dict):
     to_encode = data.copy()

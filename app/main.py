@@ -11,5 +11,5 @@ def home():
     return {"message": "Welcome to FastAPI Home!"}
 
 # app.include_router(LovRouter)
-app.include_router(InvitationRouter)
 app.include_router(UsersRouter)
+app.include_router(InvitationRouter)

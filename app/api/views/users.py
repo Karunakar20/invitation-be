@@ -1,12 +1,9 @@
 from fastapi import APIRouter,Depends
 from sqlalchemy.orm import Session
 
-from api.services.users import us
-from api.pydentic.invitation.invitation import InvitationPydentic
-
 from app.api.pydentic.users.users import UserCreate, UserGoogleAuth, UserLogin
 from app.api.services.users.users import google_auth, login_user, register_user
-from core.db.db_config import db_connection
+from app.core.db.db_config import db_connection
 from sqlalchemy.ext.asyncio import AsyncSession
 
 router = APIRouter(prefix="/service",tags=["Users"])

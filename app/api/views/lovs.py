@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
-from api.services.lovs.catalog.category import CategoryLovService
-from api.services.lovs.catalog.sub_category import SubCategoryLovService
+from app.api.services.lovs.catalog.category import CategoryLovService
+from app.api.services.lovs.catalog.sub_category import SubCategoryLovService
 
 router = APIRouter(prefix="/lovs",tags=["lovs"])
 

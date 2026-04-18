@@ -1,6 +1,6 @@
-from core.db.db_config import SessionLocal
-from api.models.lovs.catalog.category import Category
-from api.utilities.common import Response,ResponseType
+from app.core.db.db_config import SessionLocal
+from app.api.models.lovs.catalog.category import Category
+from app.api.utilities.common import Response,ResponseType
 
 class CategoryLovService:
       def __init__(self):

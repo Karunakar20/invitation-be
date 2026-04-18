@@ -1,10 +1,10 @@
 from fastapi import APIRouter,Depends
 from sqlalchemy.orm import Session
 
-from api.services.invitation.invitation import create_or_update_invitation
-from api.pydentic.invitation.invitation import InvitationPydentic
+from app.api.services.invitation.invitation import create_or_update_invitation
+from app.api.pydentic.invitation.invitation import InvitationPydentic
 
-from core.db.db_config import db_connection
+from app.core.db.db_config import db_connection
 
 router = APIRouter(prefix="/service",tags=["Invitation"])
 

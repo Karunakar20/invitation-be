@@ -28,7 +28,7 @@ def register_user(db: Session, data):
         token = create_access_token({"user_id": user.id})
 
         return {
-            "user_name": user.user_name,
+            "user_id": user.id,
             "access_token": token
         }
     except Exception as e:
@@ -50,7 +50,7 @@ def login_user(db: Session, data):
         token = create_access_token({"user_id": user.id})
 
         return {
-            "user_name": user.user_name,
+            "user_id": user.id,
             "access_token": token
         }
     except Exception as e:
@@ -82,7 +82,7 @@ def google_auth(db: Session, data):
         token = create_access_token({"user_id": user.id})
 
         return {
-            "user_name": user.user_name,
+            "user_id": user.id,
             "access_token": token
         }
     except Exception as e:

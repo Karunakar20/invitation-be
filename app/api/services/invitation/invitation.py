@@ -1,9 +1,10 @@
 from app.api.models.invitation.invitation import Invitation, SubInvitation, InvitationGuests
 from app.api.pydentic.invitation.invitation import InvitationPydentic
 from app.api.utilities.common import Response, ResponseType
+from sqlalchemy import select
 
 
-async def _create_or_update_sub_event(db, invi_obj, data: InvitationPydentic):
+async def _create_or_update_sub_event(db, invi_obj: Invitation, data: InvitationPydentic):
       for sub_event in data.sub_invitating:
             obj = await db.get(SubInvitation, sub_event.id) if sub_event.id else SubInvitation()
 
@@ -19,7 +20,7 @@ async def _create_or_update_sub_event(db, invi_obj, data: InvitationPydentic):
                   db.add(obj)
 
 
-async def create_or_update_invitation(db, data: InvitationPydentic):
+async def create_or_update_invitation(data: InvitationPydentic, db):
       try:
             invi_obj = await db.get(Invitation, data.id) if data.id else Invitation()
 
@@ -36,6 +37,8 @@ async def create_or_update_invitation(db, data: InvitationPydentic):
 
             if not data.id:
                   db.add(invi_obj)
+                  # allocate primary key before creating sub-events
+                  await db.flush()
 
             await _create_or_update_sub_event(db, invi_obj, data)
 
@@ -47,4 +50,48 @@ async def create_or_update_invitation(db, data: InvitationPydentic):
 
       except Exception as e:
             await db.rollback()
-            return Response(False, ResponseType.err, err_msg, str(e))
+            return Response(False, ResponseType.err, "Unable to save invitation", str(e))
+
+
+async def get_invitations(db):
+      try:
+            result = await db.execute(select(Invitation))
+            invitations = result.scalars().all()
+            data = [
+                  {
+                        "id": i.id,
+                        "event_name": i.event_name,
+                        "event_date": i.event_date,
+                        "event_time": i.event_time,
+                        "venue_location": i.venue_location,
+                        "link": i.link,
+                  }
+                  for i in invitations
+            ]
+            return Response(True, ResponseType.success, None, None, data)
+      except Exception as e:
+            return Response(False, ResponseType.err, "Unable to fetch invitations", str(e))
+
+
+async def get_invitation_by_id(invitation_id: int, db):
+      try:
+            invitation = await db.get(Invitation, invitation_id)
+            if not invitation:
+                  return Response(False, ResponseType.err, "Invitation not found", None, None)
+
+            data = {
+                  "id": invitation.id,
+                  "event_name": invitation.event_name,
+                  "event_date": invitation.event_date,
+                  "event_time": invitation.event_time,
+                  "venue_location": invitation.venue_location,
+                  "event_photo": invitation.event_photo,
+                  "created_by": invitation.created_by,
+                  "updated_by": invitation.updated_by,
+                  "link": invitation.link,
+                  "csv_file_path": invitation.csv_file_path,
+                  "qr_code_path": invitation.qr_code_path,
+            }
+            return Response(True, ResponseType.success, None, None, data)
+      except Exception as e:
+            return Response(False, ResponseType.err, "Unable to fetch invitation", str(e))

@@ -47,6 +47,18 @@ class Settings:
             f"@{self.db_host}:{self.db_port}/{self.db_name}"
         )
 
+    @property
+    def async_database_url(self) -> str:
+        """
+        Async SQLAlchemy URL for runtime (FastAPI).
+        Alembic should continue to use `database_url` (sync) for migrations.
+        """
+        password = quote_plus(self.db_password)
+        return (
+            f"postgresql+asyncpg://{self.db_user}:{password}"
+            f"@{self.db_host}:{self.db_port}/{self.db_name}"
+        )
+
 
 settings = Settings()
 

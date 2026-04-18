@@ -1,14 +1,15 @@
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.models.users.users import Users
 from app.core.security.token_auth import create_access_token
 from app.core.security.password_validation import hash_password, verify_password
 from app.api.utilities.common import Response, ResponseType
 
-def register_user(db: Session, data):
+async def register_user(db: AsyncSession, data):
     try:
-        existing = db.execute(select(Users).where(Users.email == data.email)).scalar_one_or_none()
+        result = await db.execute(select(Users).where(Users.email == data.email))
+        existing = result.scalar_one_or_none()
 
         if existing:
             raise Exception("User already exists")
@@ -22,8 +23,8 @@ def register_user(db: Session, data):
         )
 
         db.add(user)
-        db.commit()
-        db.refresh(user)
+        await db.commit()
+        await db.refresh(user)
 
         token = create_access_token({"user_id": user.id})
 
@@ -34,9 +35,10 @@ def register_user(db: Session, data):
     except Exception as e:
         return Response(False,ResponseType.err,str(e))
 
-def login_user(db: Session, data):
+async def login_user(db: AsyncSession, data):
     try:
-        user = db.execute(select(Users).where(Users.email == data.email)).scalar_one_or_none()
+        result = await db.execute(select(Users).where(Users.email == data.email))
+        user = result.scalar_one_or_none()
 
         if not user:
             raise Exception("User not found")
@@ -56,9 +58,10 @@ def login_user(db: Session, data):
     except Exception as e:
         return Response(False,ResponseType.err,str(e))
 
-def google_auth(db: Session, data):
+async def google_auth(db: AsyncSession, data):
     try:
-        user = db.execute(select(Users).where(Users.email == data.email)).scalar_one_or_none()
+        result = await db.execute(select(Users).where(Users.email == data.email))
+        user = result.scalar_one_or_none()
 
         if not user:
             user = Users(
@@ -71,13 +74,13 @@ def google_auth(db: Session, data):
             )
 
             db.add(user)
-            db.commit()
-            db.refresh(user)
+            await db.commit()
+            await db.refresh(user)
 
         else:
             user.oauth_id = data.oauth_id
             user.profile_pic = data.profile_pic
-            db.commit()
+            await db.commit()
 
         token = create_access_token({"user_id": user.id})
 

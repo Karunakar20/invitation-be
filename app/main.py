@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 # from api.views.lovs import router as LovRouter
-from api.views.invitation import router as ServiceRouter
+from app.api.views.invitation import router as InvitationRouter
+from app.api.views.users import router as UsersRouter
 
 # Create FastAPI app
 app = FastAPI()
@@ -10,4 +11,5 @@ def home():
     return {"message": "Welcome to FastAPI Home!"}
 
 # app.include_router(LovRouter)
-app.include_router(ServiceRouter)
+app.include_router(InvitationRouter)
+app.include_router(UsersRouter)

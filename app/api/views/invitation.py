@@ -10,11 +10,11 @@ router = APIRouter(prefix="/service",tags=["Invitation"])
 
 
 @router.post("/invitation/")
-def manage_invitation(cmd: str, data: InvitationPydentic, db: Session = Depends(db_connection)):
-    mRet = create_or_update_invitation(cmd, data, db)
-    return mRet.toJson()
+def manage_invitation(data: InvitationPydentic, db: Session = Depends(db_connection)):
+    mRet = create_or_update_invitation(data, db)
+    return mRet
 
 @router.get("/invitation/")
-def get_invitation(cmd: str, db: Session = Depends(db_connection)):
-    mRet = create_or_update_invitation(cmd, None, db)
-    return mRet.toJson()
+def get_invitation(db: Session = Depends(db_connection)):
+    mRet = create_or_update_invitation(None, db)
+    return mRet

@@ -5,7 +5,7 @@ from app.api.pydentic.users.users import UserCreate, UserGoogleAuth, UserLogin
 from app.api.services.users.users import google_auth, login_user, register_user
 from app.core.db.db_config import db_connection
 
-router = APIRouter(prefix="/service",tags=["Users"])
+router = APIRouter(tags=["Users"])
 
 @router.post("/register")
 def register(data: UserCreate, db: Session = Depends(db_connection)):

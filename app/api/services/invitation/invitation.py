@@ -19,7 +19,7 @@ async def _create_or_update_sub_event(db, invi_obj, data: InvitationPydentic):
                   db.add(obj)
 
 
-async def create_or_update_invitation(db, data: InvitationPydentic, err_msg: str):
+async def create_or_update_invitation(db, data: InvitationPydentic):
       try:
             invi_obj = await db.get(Invitation, data.id) if data.id else Invitation()
 

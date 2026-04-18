@@ -9,12 +9,14 @@ from alembic import context
 import importlib
 import pkgutil
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(BASE_DIR)
+APP_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+REPO_ROOT = os.path.dirname(APP_DIR)
+# Ensure `import app...` works when running Alembic from `app/api/`
+sys.path.append(REPO_ROOT)
 
-from core.db.database import Base
-from core.config import settings
-import models  # root models package
+from app.core.db.database import Base
+from app.core.config import settings
+from app.api import models  # root models package
 
 # This is the Alembic Config object, which provides access
 # to the values within the .ini file in use.
@@ -48,7 +50,7 @@ target_metadata = Base.metadata
 def run_migrations_offline() -> None:
     """Run migrations in offline mode."""
     url = settings.database_url
-    config.set_main_option("sqlalchemy.url", url)
+    config.set_main_option("sqlalchemy.url", url.replace("%", "%%"))
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -61,7 +63,7 @@ def run_migrations_offline() -> None:
 
 def run_migrations_online() -> None:
     """Run migrations in online mode."""
-    config.set_main_option("sqlalchemy.url", settings.database_url)
+    config.set_main_option("sqlalchemy.url", settings.database_url.replace("%", "%%"))
     connectable = engine_from_config(
         config.get_section(config.config_ini_section, {}),
         prefix="sqlalchemy.",

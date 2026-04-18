@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from api.models.users.users import Users
-from core.security.token_auth import create_access_token
-from core.security.password_validation import hash_password, verify_password
+from app.api.models.users.users import Users
+from app.core.security.token_auth import create_access_token
+from app.core.security.password_validation import hash_password, verify_password
 
 async def register_user(db: AsyncSession, data):
     result = await db.execute(

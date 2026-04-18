@@ -1,6 +1,6 @@
-from api.models.invitation.invitation import Invitation, SubInvitation, InvitationGuests
-from api.pydentic.invitation.invitation import InvitationPydentic
-from api.utilities.common import Response, ResponseType
+from app.api.models.invitation.invitation import Invitation, SubInvitation, InvitationGuests
+from app.api.pydentic.invitation.invitation import InvitationPydentic
+from app.api.utilities.common import Response, ResponseType
 
 
 async def _create_or_update_sub_event(db, invi_obj, data: InvitationPydentic):

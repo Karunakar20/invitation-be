@@ -35,11 +35,14 @@ pydantic_core==2.41.1
 Pygments==2.19.2
 pylsqpack==0.3.22
 pyOpenSSL==25.3.0
+python-jose==3.5.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 python-multipart==0.0.20
 pytz==2025.2
 PyYAML==6.0.3
+passlib==1.7.4
+bcrypt==4.3.0
 rich==14.2.0
 rich-toolkit==0.15.1
 rignore==0.7.0

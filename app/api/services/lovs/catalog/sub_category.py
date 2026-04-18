@@ -1,6 +1,6 @@
-from api.models.lovs.catalog.category import SubCategory
-from core.db.db_config import SessionLocal
-from api.utilities.common import Response,ResponseType
+from app.api.models.lovs.catalog.category import SubCategory
+from app.core.db.db_config import SessionLocal
+from app.api.utilities.common import Response,ResponseType
 
 class SubCategoryLovService:
       def __init__(self):

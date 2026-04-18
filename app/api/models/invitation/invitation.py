@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, ForeignKey,Date,Time,Boolean
-from core.db.database import Base
+from app.core.db.database import Base
 
 class Invitation(Base):
       id = Column(Integer, primary_key=True, index=True)

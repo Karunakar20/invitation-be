@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, ForeignKey
-from core.db.database import Base
+from app.core.db.database import Base
 
 class Category(Base):
 

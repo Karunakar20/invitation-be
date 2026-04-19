@@ -3,7 +3,7 @@ import uuid
 from fastapi import UploadFile
 
 from app.api.models.invitation.invitation import Invitation, SubInvitation, InvitationGuests
-from app.api.pydentic.invitation.invitation import InvitationPydentic
+from app.api.pydentic.invitation.invitation import InvitationPydentic,InvitationResponse
 from app.api.utilities.common import Response, ResponseType
 from sqlalchemy import select
 
@@ -34,7 +34,6 @@ async def _create_or_update_sub_event(db, invi_obj: Invitation, data: Invitation
             obj.event_start_time = sub_event.event_start_time
             obj.event_end_time = sub_event.event_end_time
 
-            # ✅ Handle sub event photo
             if sub_event.event_photo:
                   obj.event_photo = await _save_file(sub_event.event_photo)
             elif isinstance(sub_event.event_photo, str):
@@ -52,9 +51,7 @@ async def create_or_update_invitation(data: InvitationPydentic, db):
             invi_obj.event_date = data.event_date
             invi_obj.event_time = data.event_time
 
-            # ✅ Handle main event photo
             if data.event_photo:
-                  print("Saving uploaded file...")
                   invi_obj.event_photo = await _save_file(data.event_photo)
             elif isinstance(data.event_photo, str):
                   invi_obj.event_photo = data.event_photo
@@ -89,6 +86,7 @@ async def get_invitations(db):
                   {
                         "id": i.id,
                         "event_name": i.event_name,
+                        "event_photo": i.event_photo,
                         "event_date": i.event_date,
                         "event_time": i.event_time,
                         "venue_location": i.venue_location,
@@ -104,22 +102,19 @@ async def get_invitations(db):
 async def get_invitation_by_id(invitation_id: int, db):
       try:
             invitation = await db.get(Invitation, invitation_id)
+            
             if not invitation:
                   return Response(False, ResponseType.err, "Invitation not found", None, None)
 
-            data = {
-                  "id": invitation.id,
-                  "event_name": invitation.event_name,
-                  "event_date": invitation.event_date,
-                  "event_time": invitation.event_time,
-                  "venue_location": invitation.venue_location,
-                  "event_photo": invitation.event_photo,
-                  "created_by": invitation.created_by,
-                  "updated_by": invitation.updated_by,
-                  "link": invitation.link,
-                  "csv_file_path": invitation.csv_file_path,
-                  "qr_code_path": invitation.qr_code_path,
-            }
-            return Response(True, ResponseType.success, None, None, data)
+            result = await db.execute(select(SubInvitation).
+                                      where(SubInvitation.invitation == invitation.id))
+
+            sub_data = result.scalars().all()
+
+            invitation.sub_invitating = sub_data
+
+            response_data = InvitationResponse.model_validate(invitation)
+
+            return Response(True, ResponseType.success, None, None, response_data.model_dump())
       except Exception as e:
             return Response(False, ResponseType.err, "Unable to fetch invitation", str(e))

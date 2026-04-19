@@ -22,6 +22,10 @@ class SubInvitationPydentic(BaseModel):
     event_end_time: time
     event_photo: Union[str, UploadFile]
 
+    class Config:
+    
+        from_attributes = True
+
 class InvitationPydentic(BaseModel):
     id: Optional[int] = None
     # event_type: int
@@ -38,3 +42,37 @@ class InvitationPydentic(BaseModel):
     qr_code_path: Optional[str] = None
 
     sub_invitating: List[SubInvitationPydentic] = Field(default_factory=list)
+
+    class Config:
+    
+        from_attributes = True
+
+class SubInvitationResponse(BaseModel):
+    id: int
+    event_name: str
+    venue_location: str
+    event_date: date
+    event_start_time: time
+    event_end_time: time
+    event_photo: str   # ✅ always string
+
+    class Config:
+        from_attributes = True
+
+
+class InvitationResponse(BaseModel):
+    id: int
+    event_name: str
+    venue_location: str
+    event_date: date
+    event_time: time
+    event_photo: str   # ✅ always string
+
+    link: Optional[str]
+    csv_file_path: Optional[str]
+    qr_code_path: Optional[str]
+
+    sub_invitating: List[SubInvitationResponse]
+
+    class Config:
+        from_attributes = True

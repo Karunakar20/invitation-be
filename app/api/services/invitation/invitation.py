@@ -1,7 +1,26 @@
+import os
+import uuid
+from fastapi import UploadFile
+
 from app.api.models.invitation.invitation import Invitation, SubInvitation, InvitationGuests
 from app.api.pydentic.invitation.invitation import InvitationPydentic
 from app.api.utilities.common import Response, ResponseType
 from sqlalchemy import select
+
+
+UPLOAD_DIR = "uploads"
+
+
+async def _save_file(file: UploadFile):
+    
+      os.makedirs(UPLOAD_DIR, exist_ok=True)
+
+      filename = f"{uuid.uuid4()}_{file.filename}"
+      file_path = os.path.join(UPLOAD_DIR, filename)
+      with open(file_path, "wb") as f:
+            f.write(await file.read())
+
+      return file_path
 
 
 async def _create_or_update_sub_event(db, invi_obj: Invitation, data: InvitationPydentic):
@@ -14,11 +33,15 @@ async def _create_or_update_sub_event(db, invi_obj: Invitation, data: Invitation
             obj.event_date = sub_event.event_date
             obj.event_start_time = sub_event.event_start_time
             obj.event_end_time = sub_event.event_end_time
-            obj.event_photo = sub_event.event_photo
 
-            if not data.id:
+            # ✅ Handle sub event photo
+            if sub_event.event_photo:
+                  obj.event_photo = await _save_file(sub_event.event_photo)
+            elif isinstance(sub_event.event_photo, str):
+                  obj.event_photo = sub_event.event_photo
+
+            if not sub_event.id:
                   db.add(obj)
-
 
 async def create_or_update_invitation(data: InvitationPydentic, db):
       try:
@@ -28,7 +51,14 @@ async def create_or_update_invitation(data: InvitationPydentic, db):
             invi_obj.venue_location = data.venue_location
             invi_obj.event_date = data.event_date
             invi_obj.event_time = data.event_time
-            invi_obj.event_photo = data.event_photo
+
+            # ✅ Handle main event photo
+            if data.event_photo:
+                  print("Saving uploaded file...")
+                  invi_obj.event_photo = await _save_file(data.event_photo)
+            elif isinstance(data.event_photo, str):
+                  invi_obj.event_photo = data.event_photo
+
             invi_obj.created_by = data.created_by
             invi_obj.updated_by = data.updated_by
             invi_obj.link = data.link
@@ -37,7 +67,6 @@ async def create_or_update_invitation(data: InvitationPydentic, db):
 
             if not data.id:
                   db.add(invi_obj)
-                  # allocate primary key before creating sub-events
                   await db.flush()
 
             await _create_or_update_sub_event(db, invi_obj, data)
@@ -51,7 +80,6 @@ async def create_or_update_invitation(data: InvitationPydentic, db):
       except Exception as e:
             await db.rollback()
             return Response(False, ResponseType.err, "Unable to save invitation", str(e))
-
 
 async def get_invitations(db):
       try:

@@ -1,6 +1,7 @@
 from pydantic import BaseModel,Field
-from typing import Optional,List
+from typing import Optional,List, Union
 from datetime import date, time
+from fastapi import UploadFile
 
 class InvitaionProfile(BaseModel):
     id: Optional[int] = None
@@ -19,7 +20,7 @@ class SubInvitationPydentic(BaseModel):
     event_date: date
     event_start_time: time
     event_end_time: time
-    event_photo: str
+    event_photo: Union[str, UploadFile]
 
 class InvitationPydentic(BaseModel):
     id: Optional[int] = None
@@ -28,11 +29,10 @@ class InvitationPydentic(BaseModel):
     venue_location: str
     event_date: date
     event_time: time
-    event_photo: str
+    event_photo: Union[str, UploadFile]
     created_by: int
     updated_by : int
 
-    event_photo: str
     link: Optional[str] = None
     csv_file_path: Optional[str] = None
     qr_code_path: Optional[str] = None

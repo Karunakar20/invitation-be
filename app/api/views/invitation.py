@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends,UploadFile, File, Form, Depends
+from fastapi import APIRouter,Depends, Request,UploadFile, File, Form, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 import json
 
@@ -59,8 +59,11 @@ async def manage_invitation(
 
 
 @router.get("/invitation/")
-async def get_invitation(db: AsyncSession = Depends(db_connection)):
-    mRet = await get_invitations(db)
+async def get_invitation(
+    request: Request,
+    db: AsyncSession = Depends(db_connection)
+):
+    mRet = await get_invitations(request, db)  # ✅ correct order
     return mRet.toJson()
 
 

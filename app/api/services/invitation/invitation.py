@@ -1,14 +1,20 @@
 import os
 import uuid
 from fastapi import UploadFile
+from fastapi import Request
 
 from app.api.models.invitation.invitation import Invitation, SubInvitation, InvitationGuests
 from app.api.pydentic.invitation.invitation import InvitationPydentic,InvitationResponse
 from app.api.utilities.common import Response, ResponseType
 from sqlalchemy import select
 
+from app.api.settings import UPLOAD_DIR
 
-UPLOAD_DIR = "uploads"
+# ✅ reusable helper
+def build_file_url(request: Request, path: str | None) -> str | None:
+      if not path:
+            return None
+      return str(request.base_url).rstrip("/") + "/" + path.lstrip("/")
 
 
 async def _save_file(file: UploadFile):
@@ -78,7 +84,7 @@ async def create_or_update_invitation(data: InvitationPydentic, db):
             await db.rollback()
             return Response(False, ResponseType.err, "Unable to save invitation", str(e))
 
-async def get_invitations(db):
+async def get_invitations(request: Request,db):
       try:
             result = await db.execute(select(Invitation))
             invitations = result.scalars().all()
@@ -86,7 +92,7 @@ async def get_invitations(db):
                   {
                         "id": i.id,
                         "event_name": i.event_name,
-                        "event_photo": i.event_photo,
+                        "event_photo": build_file_url(request, i.event_photo),
                         "event_date": i.event_date,
                         "event_time": i.event_time,
                         "venue_location": i.venue_location,
@@ -102,7 +108,7 @@ async def get_invitations(db):
 async def get_invitation_by_id(invitation_id: int, db):
       try:
             invitation = await db.get(Invitation, invitation_id)
-            
+
             if not invitation:
                   return Response(False, ResponseType.err, "Invitation not found", None, None)
 

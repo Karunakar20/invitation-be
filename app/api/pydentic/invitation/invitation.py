@@ -4,7 +4,7 @@ from datetime import date, time
 from fastapi import UploadFile
 
 class InvitaionProfile(BaseModel):
-    id: Optional[int] = None
+    id: Optional[str] = None
     name_1: Optional[str] = None
     name_2: Optional[str] = None
     date_1: Optional[date] = None
@@ -27,7 +27,7 @@ class SubInvitationPydentic(BaseModel):
         from_attributes = True
 
 class InvitationPydentic(BaseModel):
-    id: Optional[int] = None
+    id: Optional[str] = None
     # event_type: int
     event_name: str
     venue_location: str
@@ -61,7 +61,7 @@ class SubInvitationResponse(BaseModel):
 
 
 class InvitationResponse(BaseModel):
-    id: int
+    id: str
     event_name: str
     venue_location: str
     event_date: date

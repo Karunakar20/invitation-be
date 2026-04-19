@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, Integer, ForeignKey,Date,Time,Boolean
 from app.core.db.database import Base
 
 class Invitation(Base):
-      id = Column(Integer, primary_key=True, index=True)
+      id = Column(String, primary_key=True, index=True)
       # event_type = Column(Integer, ForeignKey("tb_category.id", ondelete="CASCADE"))
       created_by = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
       updated_by = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
@@ -21,7 +21,7 @@ class Invitation(Base):
 
 class SubInvitation(Base):
       id = Column(Integer, primary_key=True, index=True)
-      invitation = Column(Integer, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
+      invitation = Column(String, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
 
       event_name = Column(String(250))
       venue_location = Column(String(250))
@@ -34,9 +34,9 @@ class SubInvitation(Base):
       __tablename__ = "tb_sub_invitation"
       
 class InvitationGuests(Base):
-      id = Column(Integer, primary_key=True, index=True)
+      id = Column(String, primary_key=True, index=True)
 
-      invitation = Column(Integer, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
+      invitation = Column(String, ForeignKey("tb_invitation.id", ondelete="CASCADE"))
       guest = Column(Integer, ForeignKey("tb_users.id", ondelete="CASCADE"))
 
       __tablename__ = "tb_invitation_guests"

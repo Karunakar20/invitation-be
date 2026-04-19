@@ -6,6 +6,7 @@ from app.api.services.invitation.invitation import (
     create_or_update_invitation,
     get_invitations,
     get_invitation_by_id,
+    add_invitation_guest
 )
 from app.api.pydentic.invitation.invitation import InvitationPydentic
 
@@ -63,12 +64,18 @@ async def get_invitation(
     request: Request,
     db: AsyncSession = Depends(db_connection)
 ):
-    mRet = await get_invitations(request, db)  # ✅ correct order
+    mRet = await get_invitations(request, db)
     return mRet.toJson()
 
 
 @router.get("/invitation/{invitation_id}")
-async def get_invitation_id(invitation_id: int, db: AsyncSession = Depends(db_connection)):
+async def get_invitation_id(invitation_id: str, db: AsyncSession = Depends(db_connection)):
     mRet = await get_invitation_by_id(invitation_id, db)
     return mRet.toJson()
+
+@router.post("/add_guests/{invitation_id}/guests")
+async def add_invitation_guests(invitation_id: str, guest_id: int, db: AsyncSession = Depends(db_connection)):
+    mRet = await add_invitation_guest(invitation_id, guest_id, db)
+    return mRet.toJson()
+
 

@@ -40,3 +40,5 @@ htmlcov/
 
 app/api/alembic/versions/*
 !app/api/alembic/versions/.gitkeep
+
+uploads/

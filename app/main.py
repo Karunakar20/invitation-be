@@ -1,9 +1,11 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 
+from app.core.security.auth_middleware import auth_middleware
 from app.api.views.invitation import router as InvitationRouter
 from app.api.views.users import router as UsersRouter
-from app.core.security.auth_middleware import auth_middleware
+from app.api.services.common.images_service import router as ImagesRouter
+
 
 app = FastAPI()
 app.middleware("http")(auth_middleware)
@@ -38,3 +40,4 @@ def home():
 
 app.include_router(UsersRouter)
 app.include_router(InvitationRouter)
+app.include_router(ImagesRouter)

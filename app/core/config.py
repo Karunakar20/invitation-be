@@ -36,6 +36,18 @@ class Settings:
     db_port: str = _env("DB_PORT", "6000")
     db_name: str = _env("DB_NAME", _env("POSTGRES_DB", "wedding_db"))
     database_url_override: str | None = _env("DATABASE_URL")
+    # MongoDB
+    mongodb_host: str = _env("MONGODB_HOST", "127.0.0.1")
+    mongodb_port: str = _env("MONGODB_PORT", "27017")
+    mongodb_name: str = _env("MONGODB_NAME", "invitation_chat_db")
+    mongodb_user: str = _env("MONGODB_USER", "")
+    mongodb_password: str = _env("MONGODB_PASSWORD", "")
+
+    @property
+    def mongodb_url(self) -> str:
+        if self.mongodb_user and self.mongodb_password:
+            return f"mongodb://{self.mongodb_user}:{quote_plus(self.mongodb_password)}@{self.mongodb_host}:{self.mongodb_port}/{self.mongodb_name}"
+        return f"mongodb://{self.mongodb_host}:{self.mongodb_port}/{self.mongodb_name}"
 
     @property
     def database_url(self) -> str:

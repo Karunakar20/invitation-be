@@ -28,8 +28,7 @@ async def auth_middleware(request: Request, call_next):
         "/redoc",
         "/login",
         "/register",
-        "/google",
-        "/service/add_guests"
+        "/google"
     )
 
     if _is_public_path(request.url.path, public_paths, public_prefixes):

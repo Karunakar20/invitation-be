@@ -9,8 +9,9 @@ from app.api.services.invitation.invitation import (
     add_invitation_guest
 )
 from app.api.pydentic.invitation.invitation import InvitationPydentic
-
 from app.core.db.db_config import db_connection
+
+from app.core.db.mongodb_config import get_mongodb
 
 router = APIRouter(prefix="/service",tags=["Invitation"])
 
@@ -40,7 +41,8 @@ async def manage_invitation(
     data: str = Form(...),  # JSON string
     event_photo: UploadFile = File(...),
     sub_event_photos: list[UploadFile] = File([]),
-    db: AsyncSession = Depends(db_connection)
+    db: AsyncSession = Depends(db_connection),
+    mongodb = Depends(get_mongodb)
 ):
     parsed = json.loads(data)
 
@@ -54,7 +56,8 @@ async def manage_invitation(
 
     mRet = await create_or_update_invitation(
         InvitationPydentic(**parsed),
-        db
+        db,
+        mongodb
     )
     return mRet.toJson()
 

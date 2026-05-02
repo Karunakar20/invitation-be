@@ -4,6 +4,7 @@ from fastapi.openapi.utils import get_openapi
 from app.core.security.auth_middleware import auth_middleware
 from app.api.views.invitation import router as InvitationRouter
 from app.api.views.users import router as UsersRouter
+from app.api.views.chat import router as ChatRouter
 from app.api.services.common.images_service import router as ImagesRouter
 
 
@@ -40,4 +41,5 @@ def home():
 
 app.include_router(UsersRouter)
 app.include_router(InvitationRouter)
+app.include_router(ChatRouter)
 app.include_router(ImagesRouter)

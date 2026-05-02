@@ -14,5 +14,18 @@ services:
     volumes:
       - wedding_db_data:/var/lib/postgresql/data
 
+  mongodb:
+    image: mongo:7.0
+    container_name: invitation_mongodb
+    env_file:
+      - .env
+    environment:
+      MONGO_INITDB_DATABASE: ${MONGODB_NAME:-invitation_chat_db}
+    ports:
+      - "${MONGODB_HOST_PORT:-27017}:27017"
+    volumes:
+      - mongodb_data:/data/db
+
 volumes:
   wedding_db_data:
+  mongodb_data:

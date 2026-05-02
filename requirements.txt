@@ -47,7 +47,9 @@ asyncpg==0.30.0
 rich==14.2.0
 rich-toolkit==0.15.1
 rignore==0.7.0
-sentry-sdk==2.41.0
+motor==3.7.0
+websockets==13.1
+pymongo==4.10.0
 service-identity==24.2.0
 shellingham==1.5.4
 six==1.17.0

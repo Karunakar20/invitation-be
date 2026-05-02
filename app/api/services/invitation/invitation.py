@@ -8,9 +8,11 @@ from app.api.pydentic.invitation.invitation import InvitationPydentic,Invitation
 from app.api.utilities.common import Response, ResponseType
 from sqlalchemy import select
 
+from app.api.services.chat.chat_service import create_chat_group
+from app.core.db.mongodb_config import get_mongodb
 from app.api.settings import UPLOAD_DIR
 
-# ✅ reusable helper
+
 def build_file_url(request: Request, path: str | None) -> str | None:
       if not path:
             return None
@@ -48,7 +50,7 @@ async def _create_or_update_sub_event(db, invi_obj: Invitation, data: Invitation
             if not sub_event.id:
                   db.add(obj)
 
-async def create_or_update_invitation(data: InvitationPydentic, db):
+async def create_or_update_invitation(data: InvitationPydentic, db, mongodb=None):
       try:
             invi_obj = await db.get(Invitation, data.id) if data.id else Invitation()
             
@@ -82,6 +84,20 @@ async def create_or_update_invitation(data: InvitationPydentic, db):
             if not data.id:
                   db.add(invi_obj)
                   await db.flush()
+
+                  # Create chat group for new invitation
+                  if mongodb is not None:
+                        try:
+                              chat_group_id = await create_chat_group(
+                                    invitation_id=invi_obj.id,
+                                    group_name=f"{invi_obj.event_name} Chat",
+                                    created_by=invi_obj.created_by,
+                                    mongodb=mongodb
+                              )
+                              invi_obj.chat_group_id = chat_group_id
+                        except Exception as chat_error:
+                              # Log the error but don't fail the invitation creation
+                              print(f"Failed to create chat group: {chat_error}")
 
             await _create_or_update_sub_event(db, invi_obj, data)
 

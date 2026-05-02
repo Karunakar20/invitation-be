@@ -16,6 +16,7 @@ class Invitation(Base):
       csv_file_path = Column(String, nullable=True)
       link = Column(String, nullable=True)
       qr_code_path = Column(String, nullable=True)
+      chat_group_id = Column(String, nullable=True)  # MongoDB ObjectId as string
 
       __tablename__ = "tb_invitation"
 

@@ -40,6 +40,7 @@ class InvitationPydentic(BaseModel):
     link: Optional[str] = None
     csv_file_path: Optional[str] = None
     qr_code_path: Optional[str] = None
+    chat_group_id: Optional[str] = None
 
     sub_invitating: List[SubInvitationPydentic] = Field(default_factory=list)
 
@@ -71,6 +72,7 @@ class InvitationResponse(BaseModel):
     link: Optional[str]
     csv_file_path: Optional[str]
     qr_code_path: Optional[str]
+    chat_group_id: Optional[str]
 
     sub_invitating: List[SubInvitationResponse]
 
